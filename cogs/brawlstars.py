@@ -6,7 +6,7 @@ import json
 class BrawlStars(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.brawlstars = brawlstats.Client("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6ImZiZWYxY2EzLWViZjctNDdhOS04MzQ3LTdlOGYyMDYwY2M3ZSIsImlhdCI6MTY5OTU4ODAyOSwic3ViIjoiZGV2ZWxvcGVyLzg4NmY0MjNkLTJiMTEtMDU4NS01YWMyLWFhOGJmYTczMGMwZiIsInNjb3BlcyI6WyJicmF3bHN0YXJzIl0sImxpbWl0cyI6W3sidGllciI6ImRldmVsb3Blci9zaWx2ZXIiLCJ0eXBlIjoidGhyb3R0bGluZyJ9LHsiY2lkcnMiOlsiMTAzLjExMS4zMy4xOTUiXSwidHlwZSI6ImNsaWVudCJ9XX0.swYB1syYSUJPB3xRaxPgi9fBgIY1dFPZUwhduuwPNqt8DkG1hgehhSe6Tx4jhqrKbWvSkP4de8yrqP0Cqt3Xbw")
+        self.brawlstars = brawlstats.Client("api token")
         self.players_with_tag = self.load_players_with_tag()
 
     def load_players_with_tag(self):
