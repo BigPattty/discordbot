@@ -4,6 +4,8 @@ import brawlstats
 import json
 
 class BrawlStars(commands.Cog):
+    description = "All your Brawl Stars Commands!"
+    
     def __init__(self, bot):
         self.bot = bot
         self.brawlstars = brawlstats.Client("api token")
@@ -20,7 +22,7 @@ class BrawlStars(commands.Cog):
         with open('data/players_with_tag.json', 'w') as file:
             json.dump(self.players_with_tag, file)
 
-    @commands.command(name="profile")
+    @commands.command(name="profile", help = "View your BS Profile!")
     async def user_profile_bs(self, ctx, player_tag=None):
         if player_tag is None:
             player_tag = self.players_with_tag.get(str(ctx.author.id))
@@ -56,7 +58,7 @@ class BrawlStars(commands.Cog):
             request_error_embed = discord.Embed(title="API Error", description=f"An error occurred while fetching data from the Brawl Stars API:\n```{e}```", color=0xFF0000)
             await ctx.send(embed=request_error_embed)
 
-    @commands.command(name="savetag")
+    @commands.command(name="save", help = "$save <#playertag>")
     async def save_player_tag(self, ctx, tag=None):
         if tag is None:
             errorem = discord.Embed(title="We have an issue!", description="Unfortunately, my telepathic skills are slightly rusty, so I need you to supply me with your player tag. Soz!", color=0xFF0000)
@@ -83,7 +85,7 @@ class BrawlStars(commands.Cog):
             errorem.set_footer(text="Brawl Stars Cog by ThePeaceKeeper")
             await ctx.send("<@1135757246337400882>", embed=errorem)
 
-    @commands.command(name = "viewtag")
+    @commands.command(name = "view", help = "View your BS Player Tag saved to the bot!")
     async def view_player_tag(self, ctx, user: discord.Member = None):
         if user is None:
             user = ctx.author
