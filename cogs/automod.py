@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 import json
 
-class AutoModCog(commands.Cog):
+class AutoMod(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.automod_settings = {}  # Dictionary to store automod settings for each server
@@ -18,7 +18,9 @@ class AutoModCog(commands.Cog):
 
         try:
             with open('data/modlog_channels.json', 'r') as file:
-                self.modlog_channels = json.load(file)
+                modlog_channels_data = json.load(file)
+                # Convert channel IDs back to TextChannel objects
+                self.modlog_channels = {int(guild_id): self.bot.get_channel(int(channel_id)) for guild_id, channel_id in modlog_channels_data.items()}
         except FileNotFoundError:
             pass
 
@@ -26,8 +28,10 @@ class AutoModCog(commands.Cog):
         with open('data/automod_settings.json', 'w') as file:
             json.dump(self.automod_settings, file, indent=2)
 
+        # Convert TextChannel objects to their IDs for serialization
+        modlog_channels_data = {str(guild_id): str(channel.id) for guild_id, channel in self.modlog_channels.items()}
         with open('data/modlog_channels.json', 'w') as file:
-            json.dump(self.modlog_channels, file, indent=2)
+            json.dump(modlog_channels_data, file, indent=2)
 
     def get_modlog_channel(self, guild):
         return self.modlog_channels.get(guild.id)
@@ -45,9 +49,10 @@ class AutoModCog(commands.Cog):
         Set up automod rules.
 
         Parameters:
-        censor_words (str): Comma-separated list of words to be censored.
-        max_mentions (int): Maximum number of mentions allowed in a message (default is 5).
-        """
+        `censor_words (str)`: Comma-separated list of words to be censored.
+        
+        `max_mentions (int)`: Maximum number of mentions allowed in a message (default is 5).
+        """'\n'
         if not censor_words:
             embed = discord.Embed(
                 title="Set Automod",
@@ -89,9 +94,9 @@ class AutoModCog(commands.Cog):
                 title="Set Modlog",
                 description="Set the modlog channel for logging incidents.\n\n"
                             "**Usage:**\n"
-                            "`!setmodlog #modlog-channel`\n\n"
+                            "`$setmodlog #modlog-channel`\n\n"
                             "**Example:**\n"
-                            "`!setmodlog #mod-log`",
+                            "`$setmodlog #mod-log`",
                 color=discord.Color.blue()
             )
             await ctx.send(embed=embed)
@@ -131,4 +136,4 @@ class AutoModCog(commands.Cog):
                 return
 
 async def setup(bot):
-    await bot.add_cog(AutoModCog(bot))
+    await bot.add_cog(AutoMod(bot))
